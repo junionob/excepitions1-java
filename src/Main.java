@@ -9,6 +9,8 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         Scanner sc = new Scanner(System.in);
 
+        Date now = new Date();
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         System.out.print("Room number: ");
         int number = sc.nextInt();
@@ -24,6 +26,26 @@ public class Main {
         else {
             Reservation reservation = new Reservation(number, checkIn, checkOut);
             System.out.println(reservation);
+
+
+            System.out.println();
+            System.out.println("Enter data to update the reservation: ");
+            System.out.print("Check-in date (dd/MM/yyyy): ");
+            checkIn = sdf.parse(sc.next());
+            System.out.print("Check-out date (dd/MM/yyyy): ");
+            checkOut = sdf.parse(sc.next());
+
+
+            if(checkIn.before(now) || checkOut.before(now)) {
+                System.out.println("Reservation dates for update must be future dates");
+            } else if (checkIn.after(checkOut)) {
+                System.out.println("Check-out date must be after check-in date");
+            }
+            else {
+                reservation.updateDates(checkIn, checkOut);
+
+                System.out.println(reservation);
+            }
         }
 
         sc.close();
